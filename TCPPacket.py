@@ -1,3 +1,4 @@
+# Created by Benjamin Pratt on 11/8/2022
 import pickle
 """
 TCPPacket contains different types of packets that could be sent 
