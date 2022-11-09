@@ -87,13 +87,12 @@ def main():
                 print(f"\t{decrypted.decode('utf-8')}")
 
         # Allow the user to send a message
-        while True:
-            name = input("Type the name of the user you would like to send a message to, or type 'no' to stop. ")
-            if name == 'no':
-                # If the user doesn't want to send a message, send a blank packet so that the server closes
-                # the connection with the user and doesn't error out waiting for a message
-                s.send(TCPPacket.EmptyPacket().encode_packet())
-                break
+        name = input("Type the name of the user you would like to send a message to, or type 'no'. ")
+        if name == 'no':
+            # If the user doesn't want to send a message, send a blank packet so that the server closes
+            # the connection with the user and doesn't error out waiting for a message
+            s.send(TCPPacket.EmptyPacket().encode_packet())
+        else:
             # Get the public key of the user you want to send a message to
             p_key = crypto_serialization.load_ssh_public_key(users[name])
             # Send the encrypted message to the server
@@ -101,6 +100,7 @@ def main():
                                         padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),
                                                      algorithm=hashes.SHA256(),
                                                      label=None))).encode_packet())
+        is_running = not (input("Would you like to continue sending and reading messages? (yes/no) ") == "no")
 
 
 if __name__ == '__main__':
